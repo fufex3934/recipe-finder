@@ -17,7 +17,7 @@ export default function Home() {
   const [error, setError] = useState("");
 
   const handleSearch = async () => {
-    if (!search) return;  // Avoid fetching if search is empty
+    if (!search) return;
 
     setLoading(true);
     setError("");
@@ -28,7 +28,7 @@ export default function Home() {
       );
       const data = await res.json();
 
-      setRecipes(data.meals || []); // Fallback if meals is undefined
+      setRecipes(data.meals || []);  // Fallback if meals is undefined
     } catch (error) {
       setError("Something went wrong");
     } finally {
@@ -37,10 +37,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (search) {
-      handleSearch();
-    }
-  }, [search]);
+    handleSearch();
+  }, [search]);  // `handleSearch` is fine here, as `search` is a dependency
 
   return (
     <div className="container mx-auto p-4">
