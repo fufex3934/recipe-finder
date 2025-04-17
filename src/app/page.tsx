@@ -33,6 +33,7 @@ export default function Home() {
     }
   };
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     handleSearch();
   }, [search]); // You can disable the warning for this line if needed
