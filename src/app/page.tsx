@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
 
@@ -16,7 +17,8 @@ export default function Home() {
   const [error, setError] = useState("");
 
   const handleSearch = async () => {
-    if (!search) return;
+    if (!search) return;  // Avoid fetching if search is empty
+
     setLoading(true);
     setError("");
 
@@ -25,9 +27,8 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_MEALDB_API_URL}/search.php?s=${search}`
       );
       const data = await res.json();
-      
 
-      setRecipes(data.meals || []);
+      setRecipes(data.meals || []); // Fallback if meals is undefined
     } catch (error) {
       setError("Something went wrong");
     } finally {
@@ -36,8 +37,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    handleSearch();
+    if (search) {
+      handleSearch();
+    }
   }, [search]);
+
   return (
     <div className="container mx-auto p-4">
       <input

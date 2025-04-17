@@ -15,15 +15,15 @@ type Recipe = {
 type ErrorState = string | null;
 
 export default function RecipeDetail() {
-  const { id } = useParams<{ id: string }>(); 
-  const [recipe, setRecipe] = useState<Recipe | null>(null); 
-  const [loading, setLoading] = useState<boolean>(true); 
-  const [error, setError] = useState<ErrorState>(null); 
+  const { id } = useParams<{ id: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<ErrorState>(null);
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      if (!id) return;
+    if (!id) return;  // Ensure 'id' exists before fetching
 
+    const fetchRecipe = async () => {
       setLoading(true);
       setError(null);
 
@@ -32,9 +32,10 @@ export default function RecipeDetail() {
           `${process.env.NEXT_PUBLIC_MEALDB_API_URL}/lookup.php?i=${id}`
         );
         const data = await res.json();
-        setRecipe(data.meals[0]);
+        setRecipe(data.meals ? data.meals[0] : null);
       } catch (err) {
         setError('Something went wrong');
+        console.error(err);  // Log error to console for debugging
       } finally {
         setLoading(false);
       }
