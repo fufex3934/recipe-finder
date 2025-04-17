@@ -13,12 +13,10 @@ export default function Home() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleSearch = useCallback(async () => {
     if (!search) return;
     setLoading(true);
-    setError("");
 
     try {
       const res = await fetch(
@@ -27,7 +25,7 @@ export default function Home() {
       const data = await res.json();
       setRecipes(data.meals || []);
     } catch (error) {
-      setError("Something went wrong");
+      console.error("Something went wrong", error);
     } finally {
       setLoading(false);
     }
@@ -47,7 +45,6 @@ export default function Home() {
         onChange={(e) => setSearch(e.target.value)}
       />
       {loading && <div>Loading...</div>}
-      {error && <div className="text-red-500">{error}</div>} {/* Display error here */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {recipes.map((recipe) => (
           <RecipeCard key={recipe.idMeal} recipe={recipe} />
