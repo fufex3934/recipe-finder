@@ -1,5 +1,4 @@
-'use client';
-
+"use client";
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
 
@@ -18,7 +17,6 @@ export default function Home() {
 
   const handleSearch = async () => {
     if (!search) return;
-
     setLoading(true);
     setError("");
 
@@ -27,8 +25,7 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_MEALDB_API_URL}/search.php?s=${search}`
       );
       const data = await res.json();
-
-      setRecipes(data.meals || []);  // Fallback if meals is undefined
+      setRecipes(data.meals || []);
     } catch (error) {
       setError("Something went wrong");
     } finally {
@@ -38,7 +35,7 @@ export default function Home() {
 
   useEffect(() => {
     handleSearch();
-  }, [search]);  // `handleSearch` is fine here, as `search` is a dependency
+  }, [search]); // You can disable the warning for this line if needed
 
   return (
     <div className="container mx-auto p-4">
