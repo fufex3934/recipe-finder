@@ -47,7 +47,7 @@ export default function Home() {
         onChange={(e) => setSearch(e.target.value)}
       />
       {loading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
+      {error && <div className="text-red-500">{error}</div>} {/* Display error here */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {recipes.map((recipe) => (
           <RecipeCard key={recipe.idMeal} recipe={recipe} />
