@@ -1,6 +1,6 @@
 "use client";
 import RecipeCard from "@/components/RecipeCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export type Recipe = {
   idMeal: string;
@@ -15,7 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!search) return;
     setLoading(true);
     setError("");
@@ -31,11 +31,11 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search]);
 
   useEffect(() => {
     handleSearch();
-  }, [search]); // You can disable the warning for this line if needed
+  }, [handleSearch]);
 
   return (
     <div className="container mx-auto p-4">
