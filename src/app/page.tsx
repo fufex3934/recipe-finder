@@ -2,8 +2,15 @@
 import RecipeCard from "@/components/RecipeCard";
 import { useEffect, useState } from "react";
 
+export type Recipe = {
+  idMeal: string;
+  strMeal: string;
+  strMealThumb: string;
+  strArea: string;
+};
+
 export default function Home() {
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,8 +25,8 @@ export default function Home() {
         `${process.env.NEXT_PUBLIC_MEALDB_API_URL}/search.php?s=${search}`
       );
       const data = await res.json();
-      console.log(data)
       
+
       setRecipes(data.meals || []);
     } catch (error) {
       setError("Something went wrong");
@@ -31,20 +38,22 @@ export default function Home() {
   useEffect(() => {
     handleSearch();
   }, [search]);
-  return <div>
-    <input type="text" 
-    placeholder="Search recipes..."
-    value={search}
-    onChange={(e)=>setSearch(e.target.value)}
-    />
-    {loading && <div>Loading...</div>}
-    {error && <div>{error}</div>}
-    <div>
-      {
-        recipes.map((recipe,index)=>(
-          <RecipeCard key={recipe.idMeal} recipe={recipe}/>
-        ))
-      }
+  return (
+    <div className="container mx-auto p-4">
+      <input
+        type="text"
+        placeholder="Search recipes..."
+        className="border p-2 w-full mb-4"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      {loading && <div>Loading...</div>}
+      {error && <div>{error}</div>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {recipes.map((recipe) => (
+          <RecipeCard key={recipe.idMeal} recipe={recipe} />
+        ))}
+      </div>
     </div>
-  </div>;
+  );
 }
